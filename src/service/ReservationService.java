@@ -6,6 +6,15 @@ import java.util.*;
 
 public class ReservationService {
 
+    private static final ReservationService SINGLETON = new ReservationService();
+
+    private ReservationService() {
+    }
+
+    public static ReservationService getSingleton() {
+        return SINGLETON;
+    }
+
     public static Collection<IRoom> rooms = new HashSet<>();
     public static Collection<Reservation> reservations = new HashSet<>();
 
@@ -59,10 +68,18 @@ public class ReservationService {
         return reservationsByCustomer;
     }
 
-    public Collection<Reservation> printAllReservation(){
-        return reservations;
+    public Collection<IRoom> getAllRooms() {
+        return rooms;
     }
 
-
+    public void printAllReservation() {
+        if (reservations.isEmpty()) {
+            System.out.println("No reservations found.");
+        } else {
+            for (Reservation reservation : reservations) {
+                System.out.println(reservation);
+            }
+        }
+    }
 
 }
