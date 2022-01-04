@@ -1,6 +1,16 @@
 import api.HotelResource;
+import model.Customer;
+import model.IRoom;
+import model.Reservation;
 
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.*;
 
 public class MainMenu {
 
@@ -22,16 +32,16 @@ public class MainMenu {
 
             switch (selection) {
                 case 1:
-                    System.out.println("Find a Room Service");
+                    findAndReserveARoom();
                     break;
                 case 2:
-                    System.out.println("Customer");
+                    seeMyReservation();
                     break;
                 case 3:
                     createAccount();
                     break;
                 case 4:
-                    System.out.println("Case 4");
+                    AdminMenu.adminMenu();
                     break;
                 case 5:
                     System.out.println("Exit");
@@ -43,7 +53,6 @@ public class MainMenu {
                     break;
             }
         }
-
     }
 
     private static void createAccount() {
@@ -66,6 +75,149 @@ public class MainMenu {
         }
     }
 
+
+    public static void seeMyReservation() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter your Email:");
+        String email = scanner.nextLine();
+        Customer customer = hr.getCustomer(email);
+
+        try {
+            if (Objects.isNull(customer)) {
+                System.out.println("Account not found, please enter a valid email or create a new account");
+                printMainMenu();
+            } else {
+                Collection<Reservation> reservations = hr.getCustomersReservations(email);
+                if (reservations.isEmpty()) {
+                    System.out.println("No reservation for " + customer.toString());
+                    printMainMenu();
+                } else
+                    for (Reservation reservation : reservations) {
+                        System.out.println(reservation.toString());
+                    }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            seeMyReservation();
+        }
+    }
+
+    public static void findAndReserveARoom() {
+        Customer customer;
+        String checkIn;
+        String checkOut;
+        Date dateCheckIn = null;
+        Date dateCheckOut = null;
+        String pattern = "dd/MM/yyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        boolean isDateValid;
+        Collection<IRoom> availableRooms;
+        String seeFreeRoomsNextWeek;
+
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you have an account with us? (y/n): ");
+        String hasAccount = scanner.nextLine().toLowerCase();
+
+        switch (hasAccount) {
+            case "y":
+                System.out.println("Please enter your Email:");
+                String email = scanner.nextLine();
+                customer = hr.getCustomer(email);
+                try {
+                    if (Objects.isNull(customer)) {
+                        System.out.println("Account not found, please enter a valid email or create a new account");
+                        printMainMenu();
+                    }
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+
+                do {
+                    System.out.println("Please enter check In Date in format dd//mm/yyyy: ");
+                    checkIn = scanner.nextLine();
+                    isDateValid = isValidDate(checkIn, dateFormat);
+
+                    if (isDateValid)
+                        dateCheckIn = getDate(checkIn, simpleDateFormat);
+
+                } while (!isDateValid);
+
+                do {
+                    System.out.println("Please enter check Out Date in format dd//mm/yyyy: ");
+                    checkOut = scanner.nextLine();
+                    isDateValid = isValidDate(checkOut, dateFormat);
+
+                    if (isDateValid)
+                        dateCheckOut = getDate(checkOut, simpleDateFormat);
+
+                    if (!dateCheckIn.before(dateCheckOut)) {
+                        System.out.println("Check out date can't be before check in!");
+                        isDateValid = false;
+                    }
+                } while (!isDateValid);
+
+                availableRooms = hr.findARoom(dateCheckIn, dateCheckOut);
+
+                if (availableRooms.isEmpty()) {
+                    System.out.println("There are no more rooms for this date.\n");
+
+                    do {
+                        System.out.println("Would you like to see rooms available in the next 7 days? (y/n): ");
+                        seeFreeRoomsNextWeek = scanner.nextLine().toLowerCase().trim();
+                    } while (!seeFreeRoomsNextWeek.equals("y") && (!seeFreeRoomsNextWeek.equals("n")));
+
+                    if (seeFreeRoomsNextWeek.equals("y")) {
+
+                    /*************************
+                    Add 7 Days to CheckIn and Checkout??!?
+                     **************************/
+
+
+                    } else {
+                        printMainMenu();
+                    }
+
+
+                }
+
+                break;
+            case "n":
+                System.out.println("Please create an account");
+                createAccount();
+                break;
+            default:
+                System.out.println("Invalid input enter y or n!");
+                findAndReserveARoom();
+                break;
+        }
+    }
+
+
+    private static final DateTimeFormatter dateFormat = new DateTimeFormatterBuilder()
+            .parseStrict()
+            .appendPattern("dd/MM/uuu")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
+
+    public static boolean isValidDate(String date, DateTimeFormatter dateFormat) {
+        try {
+            LocalDate.parse(date, dateFormat);
+        } catch (DateTimeParseException e) {
+            System.out.println("Please enter a valid Date");
+            return false;
+        }
+        return true;
+    }
+
+    public static Date getDate(String strDate, SimpleDateFormat simpleDateFormat) {
+        try {
+            return simpleDateFormat.parse(strDate);
+        } catch (ParseException e) {
+            System.out.println("Some problem occurred parsing the date");
+        }
+        return null;
+    }
 
     public static void printMainMenu() {
         System.out.println("\nWelcome to the Hotel Reservation\n" +

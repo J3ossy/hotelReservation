@@ -10,7 +10,7 @@ public class CustomerService {
 
     private static final CustomerService SINGLETON = new CustomerService();
 
-    private final Map<String, Customer> customers = new HashMap<String, Customer>();
+    private final Map<String, Customer> customers = new HashMap<>();
 
     private CustomerService() {}
 
@@ -36,7 +36,7 @@ public class CustomerService {
     }
 
     public Collection<Customer> getAllCustomer() {
-        return (Collection<Customer>) customers;
+        return (Collection<Customer>) customers.values();
     }
 
 }
