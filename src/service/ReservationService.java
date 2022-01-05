@@ -18,8 +18,7 @@ public class ReservationService {
     public static Collection<IRoom> rooms = new HashSet<>();
     public static Collection<Reservation> reservations = new HashSet<>();
 
-    public void addRoom(String roomNumber, Double roomPrice, RoomType roomType) {
-        Room room = new Room(roomNumber, roomPrice, roomType);
+    public void addRoom(IRoom room){
         rooms.add(room);
     }
 

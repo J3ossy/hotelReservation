@@ -1,13 +1,9 @@
 import api.AdminResource;
 import api.HotelResource;
 import com.sun.tools.javac.Main;
-import model.Customer;
-import model.IRoom;
-import model.Reservation;
-import model.RoomType;
+import model.*;
 
-import java.util.Collection;
-import java.util.Scanner;
+import java.util.*;
 
 public class AdminMenu {
 
@@ -40,7 +36,7 @@ public class AdminMenu {
                     displayAllReservations();
                     break;
                 case 4:
-                    System.out.println("Add Room");
+                    addRoom();
                     break;
                 case 5:
                     MainMenu.mainMenu();
@@ -73,24 +69,63 @@ public class AdminMenu {
 
     public static void addRoom() {
         Scanner scanner = new Scanner(System.in);
+        boolean keepRunning = true;
+        String selection;
         String roomNumber;
         Double roomPrice;
         RoomType roomType;
+        List<IRoom> addedRooms = new ArrayList<>();
 
+        while (keepRunning) {
+            System.out.println("Enter Room number: ");
+            roomNumber = scanner.nextLine();
+            System.out.println("Enter Room price: ");
+            roomPrice = scanner.nextDouble();
+            roomType = enumSelector();
 
-        System.out.println("");
+            Room newRoom = new Room(roomNumber, roomPrice, roomType);
+            addedRooms.add(newRoom);
+            System.out.println("Do you want to add another room? (y/n)");
+            String choice = scanner.nextLine();
 
+            if (choice.equals("n")) {
+                keepRunning = false;
+                ar.addRoom(addedRooms);
+            }
+        }
+    }
 
+    public static RoomType enumSelector() {
+        Scanner scanner = new Scanner(System.in);
+        RoomType roomType = null;
+        boolean validSelection = false;
+
+        do {
+            System.out.println("Enter room type (SINGLE/DOUBLE): ");
+            String choiceRoomType = scanner.nextLine().toLowerCase();
+
+            switch (choiceRoomType) {
+                case "single":
+                    roomType = RoomType.SINGLE;
+                    validSelection = true;
+                    break;
+                case "double":
+                    roomType = RoomType.DOUBLE;
+                    validSelection = true;
+                default:
+                    System.out.println("Invalid input! only single or double rooms available.");
+            }
+        } while (!validSelection);
+        return roomType;
     }
 
     public static void getAllRooms() {
         Collection<IRoom> allRooms = ar.getAllRooms();
         if (allRooms.isEmpty()) {
             System.out.println("There are no Rooms in this Hotel!");
-        } else
-            for (IRoom room : allRooms) {
-                System.out.println(room.toString());
-            }
+        } else for (IRoom room : allRooms) {
+            System.out.println(room.toString());
+        }
     }
 
     public static void printAdminMenu() {
