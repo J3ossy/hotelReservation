@@ -3,6 +3,8 @@ import api.HotelResource;
 import com.sun.tools.javac.Main;
 import model.Customer;
 import model.IRoom;
+import model.Reservation;
+import model.RoomType;
 
 import java.util.Collection;
 import java.util.Scanner;
@@ -35,7 +37,7 @@ public class AdminMenu {
                     getAllRooms();
                     break;
                 case 3:
-                    ar.displayAllReservations();
+                    displayAllReservations();
                     break;
                 case 4:
                     System.out.println("Add Room");
@@ -60,6 +62,25 @@ public class AdminMenu {
                 System.out.println(customer.toString());
             }
         }
+    }
+
+    public static void displayAllReservations() {
+        Collection<Reservation> allReservations = ar.displayAllReservations();
+        for (Reservation reservation : allReservations) {
+            System.out.println(reservation.toString());
+        }
+    }
+
+    public static void addRoom() {
+        Scanner scanner = new Scanner(System.in);
+        String roomNumber;
+        Double roomPrice;
+        RoomType roomType;
+
+
+        System.out.println("");
+
+
     }
 
     public static void getAllRooms() {

@@ -10,7 +10,9 @@ import java.util.List;
 public class AdminResource {
 
     private static final AdminResource SINGLETON = new AdminResource();
-    private AdminResource(){}
+
+    private AdminResource() {
+    }
 
     public static AdminResource getSINGLETON() {
         return SINGLETON;
@@ -23,20 +25,27 @@ public class AdminResource {
         return cs.getCustomer(email);
     }
 
-    /*
+
     public void addRoom(List<IRoom> rooms) {
-        rooms.forEach(rs::addRoom);
-    */
+        try {
+            for (IRoom room : rooms) {
+                rs.addRoom(room);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     public Collection<IRoom> getAllRooms() {
         return rs.getAllRooms();
     }
 
-    public Collection<Customer> getAllCustomers(){
+    public Collection<Customer> getAllCustomers() {
         return cs.getAllCustomer();
     }
 
-    public void displayAllReservations(){
-        rs.printAllReservation();
+    public Collection<Reservation> displayAllReservations() {
+        return rs.printAllReservation();
     }
 }

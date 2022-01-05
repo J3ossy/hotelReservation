@@ -72,14 +72,11 @@ public class ReservationService {
         return rooms;
     }
 
-    public void printAllReservation() {
+    public Collection<Reservation> printAllReservation() {
         if (reservations.isEmpty()) {
-            System.out.println("No reservations found.");
-        } else {
-            for (Reservation reservation : reservations) {
-                System.out.println(reservation);
-            }
+            System.out.println("no reservations were made!");
         }
+        return reservations;
     }
-
 }
+
