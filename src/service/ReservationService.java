@@ -15,8 +15,8 @@ public class ReservationService {
         return SINGLETON;
     }
 
-    public static Collection<IRoom> rooms = new HashSet<>();
-    public static Collection<Reservation> reservations = new HashSet<>();
+    private static final Collection<IRoom> rooms = new HashSet<>();
+    private static final Collection<Reservation> reservations = new HashSet<>();
 
     public void addRoom(IRoom room){
         rooms.add(room);

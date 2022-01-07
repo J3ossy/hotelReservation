@@ -21,7 +21,7 @@ public class AdminMenu {
             try {
                 selection = scanner.nextInt();
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid Input! Enter an Integer (number) between 1 and 5");
+                System.out.println("Invalid Input! Enter an Integer (number) between 1 and 6");
                 adminMenu();
             }
 
@@ -39,13 +39,38 @@ public class AdminMenu {
                     addRoom();
                     break;
                 case 5:
+                    addTestData();
+                    break;
+                case 6:
                     MainMenu.mainMenu();
                     keepRunning = false;
                     break;
                 default:
-                    System.out.println("Number must be within 1-5!");
+                    System.out.println("Number must be within 1-6!");
             }
         }
+    }
+
+    private static void addTestData() {
+
+        hr.createACustomer("test@email.com","Bob","Tester");
+        hr.createACustomer("test@domain.com","John","Doe");
+        hr.createACustomer("sandro@email.com","Max","Mustermann");
+
+        List<IRoom> testRooms = new ArrayList<>();
+        Room room = new Room("10",10.0,RoomType.SINGLE);
+        Room room1 = new Room("20",20.0,RoomType.DOUBLE);
+        Room room2 = new Room("21",25.0,RoomType.DOUBLE);
+        testRooms.add(room);
+        testRooms.add(room1);
+        testRooms.add(room2);
+        ar.addRoom(testRooms);
+
+        //hr.bookARoom("test@gmail.com",room,);
+
+        System.out.println("Test Data were added, go an check it out!");
+        printAdminMenu();
+
     }
 
 
@@ -86,9 +111,9 @@ public class AdminMenu {
             Room newRoom = new Room(roomNumber, roomPrice, roomType);
             addedRooms.add(newRoom);
             System.out.println("Do you want to add another room? (y/n)");
-            String choice = scanner.nextLine();
+            selection = scanner.nextLine().toLowerCase();
 
-            if (choice.equals("n")) {
+            if (selection.equals("n")) {
                 keepRunning = false;
                 ar.addRoom(addedRooms);
             }
@@ -135,7 +160,8 @@ public class AdminMenu {
                 "2. See all Rooms\n" +
                 "3. See all Reservations\n" +
                 "4. Add a Room\n" +
-                "5. Back to Main Menu\n" +
+                "5. Add Test Data\n" +
+                "6. Back to Main Menu\n" +
                 "--------------------------------\n" +
                 "Please select a number: \n");
     }

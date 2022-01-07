@@ -5,6 +5,7 @@ import model.Reservation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -106,6 +107,7 @@ public class MainMenu {
         Customer customer;
         String checkIn;
         String checkOut;
+        String roomNr;
         Date dateCheckIn = null;
         Date dateCheckOut = null;
         String pattern = "dd/MM/yyy";
@@ -134,7 +136,7 @@ public class MainMenu {
                 }
 
                 do {
-                    System.out.println("Please enter check In Date in format dd//mm/yyyy: ");
+                    System.out.println("Please enter check In Date in format dd/mm/yyyy: ");
                     checkIn = scanner.nextLine();
                     isDateValid = isValidDate(checkIn, dateFormat);
 
@@ -158,6 +160,13 @@ public class MainMenu {
                 } while (!isDateValid);
 
                 availableRooms = hr.findARoom(dateCheckIn, dateCheckOut);
+                for (IRoom room : availableRooms) {
+                    room.toString();
+                }
+
+                System.out.println("Enter the number of the room you'd like to reserve: ");
+                roomNr = scanner.nextLine();
+                hr.bookARoom(customer, hr.getRooms(roomNr), dateCheckIn, dateCheckOut);
 
                 if (availableRooms.isEmpty()) {
                     System.out.println("There are no more rooms for this date.\n");
@@ -169,16 +178,21 @@ public class MainMenu {
 
                     if (seeFreeRoomsNextWeek.equals("y")) {
 
-                    /*************************
-                    Add 7 Days to CheckIn and Checkout??!?
-                     **************************/
+                        dateCheckIn = new Date(dateCheckIn.getTime() + Duration.ofDays(7).toMillis());
+                        dateCheckOut = new Date(dateCheckOut.getTime() + Duration.ofDays(7).toMillis());
+                        availableRooms = hr.findARoom(dateCheckIn, dateCheckOut);
+                        for (IRoom room : availableRooms) {
+                            room.toString();
+                        }
 
+                        System.out.println("Enter the number of the room you'd like to reserve: ");
+                        roomNr = scanner.nextLine();
+                        hr.bookARoom(customer, hr.getRooms(roomNr), dateCheckIn, dateCheckOut);
 
                     } else {
+                        System.out.println("Sorry there are no available rooms!");
                         printMainMenu();
                     }
-
-
                 }
 
                 break;
