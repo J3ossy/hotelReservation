@@ -53,26 +53,27 @@ public class AdminMenu {
 
     private static void addTestData() {
 
-        hr.createACustomer("test@email.com","Bob","Tester");
-        hr.createACustomer("test@domain.com","John","Doe");
-        hr.createACustomer("sandro@email.com","Max","Mustermann");
+        hr.createACustomer("test@email.com", "Bob", "Tester");
+        hr.createACustomer("test@domain.com", "John", "Doe");
+        hr.createACustomer("sandro@email.com", "Max", "Mustermann");
 
         List<IRoom> testRooms = new ArrayList<>();
-        Room room = new Room("10",10.0,RoomType.SINGLE);
-        Room room1 = new Room("20",20.0,RoomType.DOUBLE);
-        Room room2 = new Room("21",25.0,RoomType.DOUBLE);
+        Room room = new Room("10", 10.0, RoomType.SINGLE);
+        Room room1 = new Room("20", 20.0, RoomType.DOUBLE);
+        Room room2 = new Room("21", 25.0, RoomType.DOUBLE);
         testRooms.add(room);
         testRooms.add(room1);
         testRooms.add(room2);
         ar.addRoom(testRooms);
 
-        //hr.bookARoom("test@gmail.com",room,);
+        Date cIDate = new Date();
+        Date cODate = new Date();
+        hr.bookARoom(ar.getCustomer("test@domain.com"), hr.getRooms("10"), cIDate, cODate);
+        hr.bookARoom(ar.getCustomer("sandro@email.com"), hr.getRooms("20"), cIDate, cODate);
 
-        System.out.println("Test Data were added, go an check it out!");
+        System.out.println("Test data has been added , go an check it out!");
         printAdminMenu();
-
     }
-
 
     public static void getAllCustomers() {
         Collection<Customer> allCustomers = ar.getAllCustomers();
@@ -83,6 +84,7 @@ public class AdminMenu {
                 System.out.println(customer.toString());
             }
         }
+        printAdminMenu();
     }
 
     public static void displayAllReservations() {
@@ -90,9 +92,10 @@ public class AdminMenu {
         for (Reservation reservation : allReservations) {
             System.out.println(reservation.toString());
         }
+        printAdminMenu();
     }
 
-    public static void addRoom() {
+    public static void addRoom()  {
         Scanner scanner = new Scanner(System.in);
         boolean keepRunning = true;
         String selection;
@@ -111,11 +114,14 @@ public class AdminMenu {
             Room newRoom = new Room(roomNumber, roomPrice, roomType);
             addedRooms.add(newRoom);
             System.out.println("Do you want to add another room? (y/n)");
+            scanner.nextLine(); // throw  '\n' away not consumed by nextDouble()
             selection = scanner.nextLine().toLowerCase();
 
             if (selection.equals("n")) {
                 keepRunning = false;
                 ar.addRoom(addedRooms);
+                System.out.println("Rooms are added!");
+                printAdminMenu();
             }
         }
     }
@@ -137,6 +143,7 @@ public class AdminMenu {
                 case "double":
                     roomType = RoomType.DOUBLE;
                     validSelection = true;
+                    break;
                 default:
                     System.out.println("Invalid input! only single or double rooms available.");
             }
@@ -151,6 +158,7 @@ public class AdminMenu {
         } else for (IRoom room : allRooms) {
             System.out.println(room.toString());
         }
+        printAdminMenu();
     }
 
     public static void printAdminMenu() {

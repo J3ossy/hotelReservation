@@ -17,6 +17,12 @@ public class MainMenu {
 
     private static final HotelResource hr = HotelResource.getSINGLETON();
 
+    private static final DateTimeFormatter dateFormat = new DateTimeFormatterBuilder()
+            .parseStrict()
+            .appendPattern("dd/MM/uuu")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
+
     public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         int selection = 0;
@@ -47,6 +53,7 @@ public class MainMenu {
                 case 5:
                     System.out.println("Exit");
                     keepRunning = false;
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid Input! The number must be within 1 and 5!");
@@ -76,7 +83,6 @@ public class MainMenu {
         }
     }
 
-
     public static void seeMyReservation() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your Email:");
@@ -95,6 +101,7 @@ public class MainMenu {
                 } else
                     for (Reservation reservation : reservations) {
                         System.out.println(reservation.toString());
+                        printMainMenu();
                     }
             }
         } catch (IllegalArgumentException e) {
@@ -150,23 +157,20 @@ public class MainMenu {
                     checkOut = scanner.nextLine();
                     isDateValid = isValidDate(checkOut, dateFormat);
 
-                    if (isDateValid)
+                    if (isDateValid) {
                         dateCheckOut = getDate(checkOut, simpleDateFormat);
 
-                    if (!dateCheckIn.before(dateCheckOut)) {
-                        System.out.println("Check out date can't be before check in!");
-                        isDateValid = false;
+                        if (!dateCheckIn.before(dateCheckOut)) {
+                            System.out.println("Check out date can't be before check in!");
+                            isDateValid = false;
+                        }
                     }
                 } while (!isDateValid);
 
                 availableRooms = hr.findARoom(dateCheckIn, dateCheckOut);
                 for (IRoom room : availableRooms) {
-                    room.toString();
+                    System.out.println(room.toString());
                 }
-
-                System.out.println("Enter the number of the room you'd like to reserve: ");
-                roomNr = scanner.nextLine();
-                hr.bookARoom(customer, hr.getRooms(roomNr), dateCheckIn, dateCheckOut);
 
                 if (availableRooms.isEmpty()) {
                     System.out.println("There are no more rooms for this date.\n");
@@ -182,19 +186,24 @@ public class MainMenu {
                         dateCheckOut = new Date(dateCheckOut.getTime() + Duration.ofDays(7).toMillis());
                         availableRooms = hr.findARoom(dateCheckIn, dateCheckOut);
                         for (IRoom room : availableRooms) {
-                            room.toString();
+                            System.out.println(room.toString());
                         }
-
-                        System.out.println("Enter the number of the room you'd like to reserve: ");
-                        roomNr = scanner.nextLine();
-                        hr.bookARoom(customer, hr.getRooms(roomNr), dateCheckIn, dateCheckOut);
-
-                    } else {
-                        System.out.println("Sorry there are no available rooms!");
+                        if (availableRooms.isEmpty()) {
+                            System.out.println("There are no more rooms for this date.\n");
+                        } else {
+                            System.out.println("Enter the number of the room you'd like to reserve: ");
+                            roomNr = scanner.nextLine();
+                            hr.bookARoom(customer, hr.getRooms(roomNr), dateCheckIn, dateCheckOut);
+                        }
                         printMainMenu();
                     }
                 }
 
+                System.out.println("Enter the number of the room you'd like to reserve: ");
+                roomNr = scanner.nextLine();
+                hr.bookARoom(customer, hr.getRooms(roomNr), dateCheckIn, dateCheckOut);
+                System.out.println("Reservation confirmed: " + hr.getCustomersReservations(customer.getEmail()));
+                printMainMenu();
                 break;
             case "n":
                 System.out.println("Please create an account");
@@ -206,13 +215,6 @@ public class MainMenu {
                 break;
         }
     }
-
-
-    private static final DateTimeFormatter dateFormat = new DateTimeFormatterBuilder()
-            .parseStrict()
-            .appendPattern("dd/MM/uuu")
-            .toFormatter()
-            .withResolverStyle(ResolverStyle.STRICT);
 
     public static boolean isValidDate(String date, DateTimeFormatter dateFormat) {
         try {

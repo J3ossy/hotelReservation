@@ -2,9 +2,9 @@ package model;
 
 public class Room implements IRoom {
 
-    private String roomNumber;
-    private Double roomPrice;
-    private RoomType enumeration;
+    private final String roomNumber;
+    private final Double roomPrice;
+    private final RoomType enumeration;
 
     public Room(String roomNumber, Double roomPrice, RoomType enumeration){
         this.roomNumber = roomNumber;
@@ -14,23 +14,23 @@ public class Room implements IRoom {
 
     @Override
     public String toString() {
-        return "Room number: " + roomNumber + ",Room price: " + roomPrice +
+        return "Room number: " + roomNumber + " ,Room price: " + roomPrice +
                 ", Room type; " + enumeration;
     }
 
     @Override
     public String getRoomNumber() {
-        return null;
+        return roomNumber;
     }
 
     @Override
     public Double getRoomPrice() {
-        return null;
+        return roomPrice;
     }
 
     @Override
     public RoomType getRoomType() {
-        return null;
+        return enumeration;
     }
 
     @Override

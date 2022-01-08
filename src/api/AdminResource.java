@@ -25,7 +25,6 @@ public class AdminResource {
         return cs.getCustomer(email);
     }
 
-
     public void addRoom(List<IRoom> rooms) {
         try {
             for (IRoom room : rooms) {
@@ -35,7 +34,6 @@ public class AdminResource {
             System.out.println(e.getMessage());
         }
     }
-
 
     public Collection<IRoom> getAllRooms() {
         return rs.getAllRooms();
@@ -48,4 +46,5 @@ public class AdminResource {
     public Collection<Reservation> displayAllReservations() {
         return rs.printAllReservation();
     }
+
 }
