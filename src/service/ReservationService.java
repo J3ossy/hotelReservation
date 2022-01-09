@@ -120,7 +120,7 @@ public class ReservationService {
      *
      * @return reservations Returns a HasSet of all reservation in the hotel
      */
-    public Collection<Reservation> getReservations() {
+    Collection<Reservation> getReservations() {
         return reservations;
     }
 }
