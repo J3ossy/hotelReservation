@@ -1,7 +1,13 @@
 # Hotel Reservation Application (CLI)
 
 ## Introduction
-This is Project  of Udacity's Java Programming course. The obejective of the project is to build a "Hotel Reservation Application", covering the fundamentals of the Java programming language. The app runs on the command line and be lauched by executin the main method on the [src/HotelApplication](src/HotelApplication.java) class.
+This is Project  of Udacity's Java Programming course. The obejective of the project is to build a "Hotel Reservation Application", covering the fundamentals of the Java programming language. 
+
+### Setup
+- Clone the repo git clone https://github.com/J3ossy/hotelReservation.git
+- Open and run the project in any IDE for Java
+- 
+The app runs on the command line and be lauched by executin the main method on the [src/HotelApplication](src/HotelApplication.java) class.
 
 ## Project Requirements
 
@@ -17,3 +23,8 @@ This is Project  of Udacity's Java Programming course. The obejective of the pro
 - **Viewing all of the hotel reservations.**
 - **Adding a room to the hotel application.**
 
+## Authors
+- [Sandro Sacher](https://github.com/J3ossy)
+
+## Built with
+- [Java](https://www.java.com/) - The programming language used
