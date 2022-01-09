@@ -1,6 +1,5 @@
 import api.AdminResource;
 import api.HotelResource;
-import com.sun.tools.javac.Main;
 import model.*;
 
 import java.util.*;
@@ -10,7 +9,9 @@ public class AdminMenu {
     private static final HotelResource hr = HotelResource.getSINGLETON();
     private static final AdminResource ar = AdminResource.getSINGLETON();
 
-
+    /**
+     * This method contains the admin menu logic
+     */
     public static void adminMenu() {
         Scanner scanner = new Scanner(System.in);
         int selection = 0;
@@ -51,6 +52,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * This method creates predefined test data for the application
+     */
     private static void addTestData() {
 
         hr.createACustomer("test@email.com", "Bob", "Tester");
@@ -75,6 +79,9 @@ public class AdminMenu {
         printAdminMenu();
     }
 
+    /**
+     * This method displays all customers that have an account
+     */
     public static void getAllCustomers() {
         Collection<Customer> allCustomers = ar.getAllCustomers();
         if (allCustomers.isEmpty()) {
@@ -87,6 +94,9 @@ public class AdminMenu {
         printAdminMenu();
     }
 
+    /**
+     * This method displays all Reservation the hotel has
+     */
     public static void displayAllReservations() {
         Collection<Reservation> allReservations = ar.displayAllReservations();
         for (Reservation reservation : allReservations) {
@@ -95,6 +105,9 @@ public class AdminMenu {
         printAdminMenu();
     }
 
+    /**
+     * This method creates new rooms for the hotel
+     */
     public static void addRoom()  {
         Scanner scanner = new Scanner(System.in);
         boolean keepRunning = true;
@@ -126,6 +139,10 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * This method validates the user choice of the room type (single/Double)
+     * @return Enumeration RoomType.SINGLE or RoomType.DOUBLE
+     */
     public static RoomType enumSelector() {
         Scanner scanner = new Scanner(System.in);
         RoomType roomType = null;
@@ -151,6 +168,9 @@ public class AdminMenu {
         return roomType;
     }
 
+    /**
+     * This method shows all Rooms in the hotel
+     */
     public static void getAllRooms() {
         Collection<IRoom> allRooms = ar.getAllRooms();
         if (allRooms.isEmpty()) {
@@ -161,6 +181,9 @@ public class AdminMenu {
         printAdminMenu();
     }
 
+    /**
+     * This method prints the admin menu text block
+     */
     public static void printAdminMenu() {
         System.out.println("\nYou're in the Admin mode!\n" +
                 "---------------------------------\n" +

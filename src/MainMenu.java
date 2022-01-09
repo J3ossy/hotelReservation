@@ -23,6 +23,10 @@ public class MainMenu {
             .toFormatter()
             .withResolverStyle(ResolverStyle.STRICT);
 
+
+    /**
+     * This method contains the main menu logic
+     */
     public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         int selection = 0;
@@ -63,6 +67,9 @@ public class MainMenu {
         }
     }
 
+    /**
+     * This method lets the user create a new account
+     */
     private static void createAccount() {
         final Scanner scanner = new Scanner(System.in);
 
@@ -83,6 +90,9 @@ public class MainMenu {
         }
     }
 
+    /**
+     * This method shows all reservations made for a specific user
+     */
     public static void seeMyReservation() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your Email:");
@@ -96,7 +106,7 @@ public class MainMenu {
             } else {
                 Collection<Reservation> reservations = hr.getCustomersReservations(email);
                 if (reservations.isEmpty()) {
-                    System.out.println("No reservation for " + customer.toString());
+                    System.out.println("No reservation for " + customer);
                     printMainMenu();
                 } else
                     for (Reservation reservation : reservations) {
@@ -110,6 +120,9 @@ public class MainMenu {
         }
     }
 
+    /**
+     * This method finds free rooms for a specific date range and let the user reserve a room
+     */
     public static void findAndReserveARoom() {
         Customer customer;
         String checkIn;
@@ -216,6 +229,12 @@ public class MainMenu {
         }
     }
 
+    /**
+     * This method checks if the the hand overed dates are valid
+     * @param date The date we want to check
+     * @param dateFormat Predefined variable with the check format
+     * @return Returns true if date is valid or false if an parse exception occurs
+     */
     public static boolean isValidDate(String date, DateTimeFormatter dateFormat) {
         try {
             LocalDate.parse(date, dateFormat);
@@ -226,6 +245,12 @@ public class MainMenu {
         return true;
     }
 
+    /**
+     * This method returns the hand overed date in the format dd/mm/yyyy
+     * @param strDate The date we want to format
+     * @param simpleDateFormat Predefined pattern in method @findAndReserveARoom
+     * @return The date in the given pattern or Null if a parse exception occurs
+     */
     public static Date getDate(String strDate, SimpleDateFormat simpleDateFormat) {
         try {
             return simpleDateFormat.parse(strDate);
@@ -235,6 +260,9 @@ public class MainMenu {
         return null;
     }
 
+    /**
+     * This method prints the main menu text block
+     */
     public static void printMainMenu() {
         System.out.println("\nWelcome to the Hotel Reservation\n" +
                 "---------------------------------\n" +

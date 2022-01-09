@@ -1,9 +1,12 @@
-package api;
+/**
+ * This class works as an api and hands over the data between the UI Classes MainMenu and AdminMenu and the Service classes.
+ * It supports modularization and decoupling
+ */
 
+package api;
 import model.*;
 import service.CustomerService;
 import service.ReservationService;
-
 import java.util.Collection;
 import java.util.List;
 

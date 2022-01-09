@@ -1,7 +1,5 @@
 package service;
-
 import model.Customer;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,25 +16,32 @@ public class CustomerService {
         return SINGLETON;
     }
 
-
-    /* adds a customer to the customer hashmap
-    @param email, firstname, lastname
+    /**
+     * This method  adds a new customer to the HasMap of customers
+     * @param email The email from the Customer
+     * @param firstname Customers firstname
+     * @param lastname Customers lastname
      */
     public void addCustomer(String email, String firstname, String lastname) {
         Customer customer = new Customer(firstname, lastname, email);
         customers.put(email, customer);
     }
 
-    /* displays the customer information with the specific email
-    @param customerEmail the email address (key) from the customer you want to display
-    @return Customer-object
+    /**
+     * This method gets the customer by the customers email
+     * @param customerEmail String the email from the customer you want to return
+     * @return Returns the Customer
      */
     public Customer getCustomer(String customerEmail) {
         return customers.get(customerEmail);
     }
 
+    /**
+     * This method gets all customer from the hotel
+     * @return Returns the values of the customer HashMap
+     */
     public Collection<Customer> getAllCustomer() {
-        return (Collection<Customer>) customers.values();
+        return customers.values();
     }
 
 }
